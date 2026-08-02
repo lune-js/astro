@@ -1,5 +1,11 @@
 # @lune-js/astro
 
+## [0.1.1] - 2026-08-02
+
+### Fixed
+
+- Fix package `peerDependencies` when versioning with ci by removing `bun update`.
+
 ## [0.1.0] - 2026-08-02
 
 ### Added
