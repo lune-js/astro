@@ -1,0 +1,35 @@
+import { defineConfig } from "@playwright/test";
+
+// NOTE: Sometimes, tests fail with `TypeError: process.stdout.clearLine is not a function`
+// for some reason. This comes from Vite, and is conditionally called based on `isTTY`.
+// We set it to false here to skip this odd behavior.
+process.stdout.isTTY = false;
+
+export default defineConfig({
+  testMatch: "tests/*.test.ts",
+  timeout: 40_000,
+  reporter: "list",
+  expect: {
+    timeout: 6_000
+  },
+  forbidOnly: !!process.env.CI,
+  retries: process.env.CI ? 2 : 0,
+  projects: [
+    {
+      name: "Chrome Stable",
+      use: {
+        browserName: "chromium",
+        channel: "chrome"
+      }
+    }
+  ],
+  webServer: {
+    command: "bun dev",
+    url: "http://localhost:4321/",
+    timeout: 120 * 1000,
+    reuseExistingServer: !process.env.CI
+  },
+  use: {
+    baseURL: "http://localhost:4321/"
+  }
+});
