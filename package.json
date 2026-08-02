@@ -1,6 +1,6 @@
 {
   "name": "@lune-js/astro",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Use Lune within Astro.",
   "bugs": {
     "url": "https://github.com/lune-js/astro/issues"
@@ -64,8 +64,8 @@
     "vite": "8.2.0"
   },
   "peerDependencies": {
-    "astro": "^7.0.0",
-    "lune-js": "^0.2.1"
+    "astro": "7.1.6",
+    "lune-js": "0.2.1"
   },
   "engines": {
     "node": ">=22.12.0",
