@@ -1,5 +1,11 @@
 # @lune-js/astro
 
+## [0.2.0] - 2026-08-05
+
+### Added
+
+- Bump `lune-js` peer dependency.
+
 ## [0.1.1] - 2026-08-02
 
 ### Fixed
