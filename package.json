@@ -1,6 +1,6 @@
 {
   "name": "@lune-js/astro",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Use Lune within Astro.",
   "bugs": {
     "url": "https://github.com/lune-js/astro/issues"
