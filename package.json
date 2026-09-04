@@ -46,10 +46,7 @@
     "lint": "oxlint",
     "lint:fix": "oxlint --fix",
     "postinstall": "lefthook install",
-    "test:e2e": "playwright test",
-    "changeset": "changeset",
-    "version": "changeset version && node .changeset/postprocess-changelogs.cjs",
-    "release": "changeset publish"
+    "test:e2e": "playwright test"
   },
   "devDependencies": {
     "@changesets/cli": "3.0.2",

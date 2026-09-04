@@ -1,8 +1,8 @@
 # @lune-js/astro
 
-## 0.2.1
+## [0.2.1] - 2026-09-04
 
-### Patch Changes
+### Fixed
 
 - Removes stray `console.log(entrypoint)` in `configResolved`.
 
