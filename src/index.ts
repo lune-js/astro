@@ -51,7 +51,6 @@ function virtualEntrypoint(options?: Options): Plugin {
       root = config.root;
       if (options?.entrypoint) {
         entrypoint = options.entrypoint.startsWith(".") ? resolve(root, options.entrypoint) : options.entrypoint;
-        console.log(entrypoint);
       }
     },
     resolveId: {
