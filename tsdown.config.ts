@@ -6,7 +6,7 @@ export default defineConfig({
     onlyBundle: [],
     neverBundle: ["astro"]
   },
-  dts: { oxc: true },
+  dts: { generator: "oxc" },
   format: ["cjs", "esm"],
   target: "esnext"
 });

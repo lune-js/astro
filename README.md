@@ -133,6 +133,10 @@ That matters with Astro's [`<ClientRouter />`](https://docs.astro.build/en/guide
 
 The guard matters: listeners on `document` survive swaps, so registering unconditionally would stack a listener on every navigation.
 
+## Documentation
+
+Full guide: [lune-js.com/integrations/astro](https://lune-js.com/integrations/astro)
+
 ## License
 
 [MIT](./LICENSE)
