@@ -94,10 +94,10 @@ jobs:
           node-version: 24
           package-manager-cache: false
 
-      - name: Build packages
+      - name: Build package
         run: bun run build
 
-      - name: Pack packages
+      - name: Pack package
         id: pack
         uses: changesets/action/pack@v2
         with:
@@ -125,7 +125,7 @@ jobs:
           node-version: 24
           package-manager-cache: false
 
-      - name: Publish packages
+      - name: Publish package
         uses: changesets/action/publish@v2
         with:
           pack-dir-artifact-id: ${{ needs.pack.outputs.pack-dir-artifact-id }}
