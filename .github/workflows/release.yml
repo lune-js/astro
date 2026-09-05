@@ -62,11 +62,13 @@ jobs:
           node-version: 24
           package-manager-cache: false
 
-      - name: Version packages
+      - name: Version package
         id: version
         uses: changesets/action/version@v2
         with:
           script: bun changeset version && bun .changeset/postprocess-changelogs.cjs
+          pr-title: "chore: release package"
+          commit-message: "chore: release package"
 
   pack:
     name: Pack
