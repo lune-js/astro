@@ -46,23 +46,24 @@
     "lint": "oxlint",
     "lint:fix": "oxlint --fix",
     "postinstall": "lefthook install",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test",
+    "version": "bun changeset version && bun .changeset/postprocess-changelogs.cjs"
   },
   "devDependencies": {
     "@changesets/cli": "3.0.2",
-    "@playwright/test": "1.62.1",
+    "@playwright/test": "1.63.0",
     "@types/bun": "1.4.0",
     "lefthook": "2.1.12",
     "oxfmt": "0.66.0",
     "oxlint": "1.81.0",
     "oxlint-tsgolint": "7.0.2001",
-    "tsdown": "0.22.14",
+    "tsdown": "0.23.0",
     "typescript": "7.0.2",
     "vite": "8.2.2"
   },
   "peerDependencies": {
-    "astro": "7.1.6",
-    "lune-js": "^0.3.0"
+    "astro": "^7.0.0",
+    "lune-js": "^1.0.0"
   },
   "engines": {
     "node": ">=22.12.0",

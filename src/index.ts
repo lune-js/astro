@@ -8,7 +8,10 @@ interface Options {
   /**
    * You can extend Lune by setting this option to a root-relative import specifier (for example, `entrypoint: "/src/entrypoint"`).
    *
-   * The default export of this file should be a function that accepts an Lune instance prior to starting, allowing the use of custom directives, plugins and other customizations for advanced use cases.
+   * The module may provide either or both of the following exports:
+   *
+   * - A `data` object, which is passed to `createApp()`. It becomes the app's root scope, so it is the place for shared scope factories, and for options Lune reads at creation time such as `$delimiters`.
+   * - A default export, which is a function that receives the app instance after it is created but before it mounts, allowing the use of custom directives, plugins and other customizations for advanced use cases.
    *
    * ```js
    * // astro.config.mjs
@@ -25,6 +28,11 @@ interface Options {
    * // src/entrypoint.ts
    * import type { App } from "lune-js";
    * import i18nPlugin from "my-i18n-plugin";
+   *
+   * export const data = {
+   *   $delimiters: ["[[", "]]"],
+   *   Counter: (start = 0) => ({ count: start, increment() { this.count++ } })
+   * };
    *
    * export default (app: App) => {
    *   app.use(i18nPlugin);
@@ -66,25 +74,34 @@ function virtualEntrypoint(options?: Options): Plugin {
         id: new RegExp(`^${resolvedVirtualModuleId}$`)
       },
       handler() {
-        if (entrypoint) {
-          return `\
+        // Without an entrypoint there is nothing to configure, so the app
+        // factory is Lune's own `createApp` untouched.
+        if (!entrypoint) {
+          return `export { createApp } from "lune-js";`;
+        }
+
+        return `\
+import { createApp as create } from "lune-js";
 import * as mod from ${JSON.stringify(entrypoint)};
 
-export const setup = (app) => {
-  if ("default" in mod) {
+export const createApp = (data) => {
+  const initialData = mod.data || data ? { ...mod.data, ...data } : undefined;
+  const app = create(initialData);
+
+  if (typeof mod.default === "function") {
     mod.default(app);
-  } else {
-    ${
-      !isBuild
-        ? `console.warn("[${NAME}] entrypoint \`" + ${JSON.stringify(
-            entrypoint
-          )} + "\` does not export a default function.");`
-        : ""
-    }
+  }${
+    isBuild
+      ? ""
+      : ` else if (!("data" in mod)) {
+    console.warn("[${NAME}] entrypoint \`" + ${JSON.stringify(
+      entrypoint
+    )} + "\` does not export a default function or a \`data\` object.");
+  }`
   }
-}`;
-        }
-        return "export const setup = () => {};";
+
+  return app;
+};`;
       }
     }
   };
@@ -92,7 +109,7 @@ export const setup = (app) => {
 
 function configEnvironmentPlugin(): Plugin {
   return {
-    name: "@astrojs/vue:config-environment",
+    name: `${NAME}/config-environment`,
     configEnvironment(environmentName, _options) {
       const environmentOptions: EnvironmentOptions = {
         optimizeDeps: {}
@@ -114,14 +131,17 @@ export default function createPlugin(options?: Options): AstroIntegration {
       "astro:config:setup": ({ injectScript, updateConfig }) => {
         // This gets injected into the user's page, so the import will pull
         // from the project's version of Lune.js in their package.json.
+        //
+        // `createApp` from the virtual entrypoint replaces Lune's own on
+        // `window.Lune`, so apps created from the escape hatch — after a
+        // client-side navigation, for example — get the same `data` and
+        // customizations as the one this script mounts.
         injectScript(
           "page",
           `import * as Lune from "lune-js";
-import { setup } from "virtual:${NAME}/entrypoint";
-const app = Lune.createApp();
-setup(app);
-window.Lune = Lune;
-document.addEventListener("DOMContentLoaded", () => app.mount());`
+import { createApp } from "virtual:${NAME}/entrypoint";
+window.Lune = { ...Lune, createApp };
+document.addEventListener("DOMContentLoaded", () => createApp().mount());`
         );
         updateConfig({
           vite: {
