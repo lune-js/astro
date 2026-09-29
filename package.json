@@ -50,16 +50,16 @@
     "version": "bun changeset version && bun .changeset/postprocess-changelogs.cjs"
   },
   "devDependencies": {
-    "@changesets/cli": "3.0.2",
+    "@changesets/cli": "3.0.3",
     "@playwright/test": "1.63.0",
-    "@types/bun": "1.4.0",
-    "lefthook": "2.1.12",
-    "oxfmt": "0.66.0",
-    "oxlint": "1.81.0",
-    "oxlint-tsgolint": "7.0.2001",
+    "@types/bun": "1.4.2",
+    "lefthook": "2.1.14",
+    "oxfmt": "0.71.0",
+    "oxlint": "1.86.0",
+    "oxlint-tsgolint": "7.0.2003",
     "tsdown": "0.23.0",
     "typescript": "7.0.2",
-    "vite": "8.2.2"
+    "vite": "8.3.1"
   },
   "peerDependencies": {
     "astro": "^7.0.0",
